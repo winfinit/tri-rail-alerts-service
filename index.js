@@ -12,10 +12,10 @@ app.get('/', function (req, res) {
 });
  
 var client = new Twitter({
-  consumer_key: 'UmeIREiGvSzFObYyfyqAoJEmv',
-  consumer_secret: 'rQje6CP6QCs2zMpJXA6l0i89HvfeNCi5ajXg6UIMIbdcCeZ5uq',
-  access_token_key: '195514121-rBcVSV8JWG7U3drtoIahlQhjcHrxo8PeUB3sxz72',
-  access_token_secret: '7lIm6c1oxoIBE7MD3H5j3OalmIlDYSsIUYNuevNWHmSHG'
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET 
 });
  
 async.waterfall([
