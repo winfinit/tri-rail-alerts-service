@@ -11,12 +11,16 @@ app.get('/', function (req, res) {
   res.json(twitter_cache);
 });
  
-var client = new Twitter({
+var twitter_secret = {
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
   access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET 
-});
+};
+
+var client = new Twitter(twitter_secret);
+
+console.log(twitter_secret);
  
 async.waterfall([
     function getUserIds(callback) {
