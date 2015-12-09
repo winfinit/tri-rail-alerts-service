@@ -6,9 +6,11 @@ var app = express();
 var twitter_screen_names = ['trirailalerts'];
 var twitter_ids = [];
 var twitter_cache = [];
+var response_cache = "";
 
 app.get('/', function (req, res) {
-  res.json(twitter_cache);
+  res.header("Content-Type",'application/json');
+  res.send(response_cache);
 });
  
 var twitter_secret = {
@@ -19,8 +21,6 @@ var twitter_secret = {
 };
 
 var client = new Twitter(twitter_secret);
-
-console.log(twitter_secret);
  
 async.waterfall([
     function getUserIds(callback) {
@@ -98,5 +98,7 @@ function addTweet(tweet) {
       "id": tweet.user.id
     }
   });  
+  // to cache string response
+  response_cache = JSON.stringify(twitter_cache);
 }
 
