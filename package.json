@@ -1,7 +1,7 @@
 {
-  "name": "tri-rail-alerts",
+  "name": "tri-rail-alerts-service",
   "version": "1.0.0",
-  "description": "Tri rail alerts cache",
+  "description": "Tri rail alerts from twitters tri rail feed exposed via express service",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,6 +19,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/winfinit/TriRailAlertsHerokuCache.git"
+    "url": "https://github.com/winfinit/tri-rail-alerts-service.git"
   }
 }

@@ -19,7 +19,6 @@ var twitter_secret = {
   access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET 
 };
-
 var client = new Twitter(twitter_secret);
  
 async.waterfall([
@@ -67,7 +66,7 @@ async.waterfall([
       throw err;
     }
 
-    var server = app.listen(process.env.PORT || 5000, function () {
+    var server = app.listen(process.env.PORT || 80, function () {
       var host = server.address().address;
       var port = server.address().port;
 
@@ -101,4 +100,3 @@ function addTweet(tweet) {
   // to cache string response
   response_cache = JSON.stringify(twitter_cache);
 }
-
