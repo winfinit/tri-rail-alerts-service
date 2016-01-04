@@ -1,7 +1,16 @@
 var Twitter = require('twitter');
 var async = require('async');
 var express = require('express');
+var debug = require('debug')('tri-rail-alerts');
 var app = express();
+try {
+    var env = require('./.env.json');
+    debug('using .env');
+} catch(e) {
+    // env is missing
+    debug('.env is not available', e);
+    var env = {};
+}
 
 var twitter_screen_names = ['trirailalerts'];
 var twitter_ids = [];
@@ -14,11 +23,13 @@ app.get('/', function (req, res) {
 });
  
 var twitter_secret = {
-  consumer_key: process.env.TWITTER_CONSUMER_KEY,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET 
+  consumer_key: process.env.TWITTER_CONSUMER_KEY || env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET || env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY || env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET || env.TWITTER_ACCESS_TOKEN_SECRET
 };
+
+debug('twitter secret', twitter_secret);
 var client = new Twitter(twitter_secret);
  
 async.waterfall([
@@ -59,6 +70,10 @@ async.waterfall([
         });
         callback(null);
       });
+    },
+    function cleanOldRecords(callback) {
+        cleanAlerts();
+        callback(null);
     }
   ], function(err) {
     if (err) {
@@ -76,7 +91,9 @@ async.waterfall([
 });
 
 //clean old tweets every hour
-setInterval(function() {
+setInterval(cleanAlerts, 1000 * 60 * 60);
+
+function cleanAlerts() {
   var today = new Date();
   twitter_cache.forEach(function(row, index) {
       var tweet_date = new Date(row.created_at);
@@ -85,8 +102,8 @@ setInterval(function() {
       }
   });
   twitter_cache = twitter_cache.filter(Boolean);
-}, 1000 * 60 * 60);
-
+  response_cache = JSON.stringify(twitter_cache);
+}
 
 function addTweet(tweet) {
   twitter_cache.push({
