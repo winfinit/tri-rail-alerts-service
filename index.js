@@ -12,6 +12,22 @@ try {
     var env = {};
 }
 
+Date.prototype.stdTimezoneOffset = function() {
+    var jan = new Date(this.getFullYear(), 0, 1);
+    var jul = new Date(this.getFullYear(), 6, 1);
+    return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset());
+}
+
+Date.prototype.dst = function() {
+    return this.getTimezoneOffset() < this.stdTimezoneOffset();
+}
+
+var TZ_OFFSET_HOURS = 5;
+var today = new Date();
+if ( today.dst() ) {
+    TZ_OFFSET_HOURS = 4; 
+}
+
 var twitter_screen_names = ['trirailalerts'];
 var twitter_ids = [];
 var twitter_cache = [];
@@ -95,8 +111,15 @@ setInterval(cleanAlerts, 1000 * 60 * 60);
 
 function cleanAlerts() {
   var today = new Date();
+  // since TriRail is in south florida, we will be working with GMT-5000
+  if ( today.getTimezoneOffset() == 0 ) {
+    today.setSeconds(TZ_OFFSET_HOURS * 60 * 60);
+  }
   twitter_cache.forEach(function(row, index) {
       var tweet_date = new Date(row.created_at);
+      if ( tweet_date.getTimezoneOffset() == 0 ) {
+        tweet_date.setSeconds(TZ_OFFSET_HOURS * 60 * 60)
+      }
       if ( tweet_date.getDate() !== today.getDate() ) {
           delete twitter_cache[index];
       }
@@ -117,3 +140,4 @@ function addTweet(tweet) {
   // to cache string response
   response_cache = JSON.stringify(twitter_cache);
 }
+
