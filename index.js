@@ -125,6 +125,11 @@ function cleanAlerts() {
       }
   });
   twitter_cache = twitter_cache.filter(Boolean);
+  if ( twitter_cache.length > 1 ) {
+    twitter_cache = twitter_cache.sort(function(a, b) {
+        return new Date(b.created_at) - new Date(a.created_at); 
+    });
+  }
   response_cache = JSON.stringify(twitter_cache);
 }
 
