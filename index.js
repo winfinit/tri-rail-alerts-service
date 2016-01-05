@@ -114,12 +114,12 @@ function cleanAlerts() {
   var today = new Date();
   // since TriRail is in south florida, we will be working with GMT-5000
   if ( today.getTimezoneOffset() == 0 ) {
-    today.setSeconds(TZ_OFFSET_HOURS * 60 * 60);
+    today.setSeconds(TZ_OFFSET_HOURS * 60 * 60 * -1);
   }
   twitter_cache.forEach(function(row, index) {
       var tweet_date = new Date(row.created_at);
       if ( tweet_date.getTimezoneOffset() == 0 ) {
-        tweet_date.setSeconds(TZ_OFFSET_HOURS * 60 * 60)
+        tweet_date.setSeconds(TZ_OFFSET_HOURS * 60 * 60 * -1)
       }
       if ( tweet_date.getDate() !== today.getDate() ) {
           delete twitter_cache[index];
