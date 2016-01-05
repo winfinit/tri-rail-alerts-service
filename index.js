@@ -77,6 +77,7 @@ async.waterfall([
         stream.on('data', function(tweet) {
           if (! tweet.text.match(/^(RT |@)/) ) {
             addTweet(tweet);    
+            cleanAlerts();
           }
         });
        
@@ -142,7 +143,5 @@ function addTweet(tweet) {
       "id": tweet.user.id
     }
   });  
-  // to cache string response
-  cleanAlerts();
 }
 
