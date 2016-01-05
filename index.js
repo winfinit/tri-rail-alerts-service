@@ -143,6 +143,6 @@ function addTweet(tweet) {
     }
   });  
   // to cache string response
-  response_cache = JSON.stringify(twitter_cache);
+  cleanAlerts();
 }
 
