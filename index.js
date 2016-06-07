@@ -141,8 +141,15 @@ function cleanAlerts() {
 }
 
 function addTweet(tweet) {
+  // filter some text
+  var text = tweet.text.replace(/VIP Bulletin for Tri- Rail /i, '');
+  text = text.replace(/(\d+)'/, '$1 minutes');
+  text = text.replace('NB', 'Northbound');
+  text = text.replace('SB', 'Southbound');
+  text = text.replace(/Update:\s+/i, '');
+  
   twitter_cache.push({
-    "text": tweet.text,
+    "text": text,
     "created_at": tweet.created_at,
     "user": {
       "screen_name": tweet.user.screen_name,
