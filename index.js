@@ -34,6 +34,7 @@ setInterval(function() {
 function updateAlerts() {
   // filter some text
   alerts.getAlerts(function(data) {
+    cache = [];
     data.forEach(function(row) {
         var text = row.text.replace(/VIP Bulletin for Tri- Rail /i, '');
         text = text.replace(/(\d+)'/, '$1 minutes');
